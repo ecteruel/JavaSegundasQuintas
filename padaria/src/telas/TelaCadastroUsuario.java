@@ -26,18 +26,71 @@ public class TelaCadastroUsuario extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 560, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 334, Short.MAX_VALUE)
-        );
+        lblUsuario = new javax.swing.JLabel();
+        txtUsuario = new javax.swing.JTextField();
+        lblSenha = new javax.swing.JLabel();
+        txtSenha = new javax.swing.JTextField();
+        lblCargo = new javax.swing.JLabel();
+        btnSalvar = new javax.swing.JButton();
+        cmbCargo = new javax.swing.JComboBox<>();
+        lblRepitaSenha = new javax.swing.JLabel();
+        txtRepitaSenha = new javax.swing.JTextField();
 
-        pack();
+        setTitle("Cadastro de usuários");
+        getContentPane().setLayout(null);
+
+        lblUsuario.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblUsuario.setForeground(new java.awt.Color(8, 85, 117));
+        lblUsuario.setText("Usuário:");
+        getContentPane().add(lblUsuario);
+        lblUsuario.setBounds(20, 20, 80, 30);
+
+        txtUsuario.setBackground(new java.awt.Color(204, 204, 255));
+        txtUsuario.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        getContentPane().add(txtUsuario);
+        txtUsuario.setBounds(160, 20, 150, 30);
+
+        lblSenha.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblSenha.setForeground(new java.awt.Color(8, 85, 117));
+        lblSenha.setText("Senha:");
+        getContentPane().add(lblSenha);
+        lblSenha.setBounds(20, 60, 80, 30);
+
+        txtSenha.setBackground(new java.awt.Color(204, 204, 255));
+        txtSenha.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        getContentPane().add(txtSenha);
+        txtSenha.setBounds(160, 60, 150, 30);
+
+        lblCargo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblCargo.setForeground(new java.awt.Color(8, 85, 117));
+        lblCargo.setText("Cargo:");
+        getContentPane().add(lblCargo);
+        lblCargo.setBounds(20, 140, 80, 30);
+
+        btnSalvar.setBackground(new java.awt.Color(204, 213, 252));
+        btnSalvar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnSalvar.setText("Salvar");
+        getContentPane().add(btnSalvar);
+        btnSalvar.setBounds(20, 200, 130, 40);
+
+        cmbCargo.setBackground(new java.awt.Color(204, 213, 249));
+        cmbCargo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Gerente", "Caixa", "Balconista" }));
+        getContentPane().add(cmbCargo);
+        cmbCargo.setBounds(160, 140, 150, 30);
+
+        lblRepitaSenha.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblRepitaSenha.setForeground(new java.awt.Color(8, 85, 117));
+        lblRepitaSenha.setText("Repita a senha:");
+        getContentPane().add(lblRepitaSenha);
+        lblRepitaSenha.setBounds(20, 100, 130, 30);
+
+        txtRepitaSenha.setBackground(new java.awt.Color(204, 204, 255));
+        txtRepitaSenha.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        getContentPane().add(txtRepitaSenha);
+        txtRepitaSenha.setBounds(160, 100, 150, 30);
+
+        setSize(new java.awt.Dimension(481, 300));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     /**
@@ -76,5 +129,14 @@ public class TelaCadastroUsuario extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnSalvar;
+    private javax.swing.JComboBox<String> cmbCargo;
+    private javax.swing.JLabel lblCargo;
+    private javax.swing.JLabel lblRepitaSenha;
+    private javax.swing.JLabel lblSenha;
+    private javax.swing.JLabel lblUsuario;
+    private javax.swing.JTextField txtRepitaSenha;
+    private javax.swing.JTextField txtSenha;
+    private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }
