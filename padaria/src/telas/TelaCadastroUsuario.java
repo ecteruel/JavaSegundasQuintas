@@ -4,6 +4,15 @@
  */
 package telas;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
+
 /**
  *
  * @author Evandro Teruel
@@ -70,6 +79,11 @@ public class TelaCadastroUsuario extends javax.swing.JFrame {
         btnSalvar.setBackground(new java.awt.Color(204, 213, 252));
         btnSalvar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnSalvar);
         btnSalvar.setBounds(20, 200, 130, 40);
 
@@ -89,9 +103,32 @@ public class TelaCadastroUsuario extends javax.swing.JFrame {
         getContentPane().add(txtRepitaSenha);
         txtRepitaSenha.setBounds(160, 100, 150, 30);
 
-        setSize(new java.awt.Dimension(481, 300));
+        setSize(new java.awt.Dimension(396, 300));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        try {
+            Connection conexao;
+            PreparedStatement st;
+            Class.forName("com.mysql.jdbc.Driver");
+            conexao = DriverManager.getConnection("jdbc:mysql://localhost:3306/bancopadaria", "root", "teruel");
+            st = conexao.prepareStatement("INSERT INTO usuario VALUES(?, ?, ?)");
+            st.setString(1, txtUsuario.getText());
+            st.setString(2, txtSenha.getText());
+            st.setString(3, cmbCargo.getSelectedItem().toString());
+            st.executeUpdate(); //Executa o comando INSERT
+            JOptionPane.showMessageDialog(btnSalvar,"Dados salvos com sucesso");
+            txtUsuario.setText("");
+            txtSenha.setText("");
+            txtRepitaSenha.setText("");
+            txtUsuario.requestFocus();
+        } catch (ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(btnSalvar,"Você não tem o driver na biblioteca");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(btnSalvar,"Algum parâmetro do BD está incorreto");
+        }
+    }//GEN-LAST:event_btnSalvarActionPerformed
 
     /**
      * @param args the command line arguments
