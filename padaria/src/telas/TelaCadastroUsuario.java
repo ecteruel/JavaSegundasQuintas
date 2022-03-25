@@ -8,10 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-
 
 /**
  *
@@ -108,25 +105,31 @@ public class TelaCadastroUsuario extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+       
         try {
             Connection conexao;
             PreparedStatement st;
             Class.forName("com.mysql.jdbc.Driver");
             conexao = DriverManager.getConnection("jdbc:mysql://localhost:3306/bancopadaria", "root", "teruel");
-            st = conexao.prepareStatement("INSERT INTO usuario VALUES(?, ?, ?)");
-            st.setString(1, txtUsuario.getText());
-            st.setString(2, txtSenha.getText());
-            st.setString(3, cmbCargo.getSelectedItem().toString());
-            st.executeUpdate(); //Executa o comando INSERT
-            JOptionPane.showMessageDialog(btnSalvar,"Dados salvos com sucesso");
-            txtUsuario.setText("");
-            txtSenha.setText("");
-            txtRepitaSenha.setText("");
-            txtUsuario.requestFocus();
+            if (txtSenha.getText().equals(txtRepitaSenha.getText())) {
+                st = conexao.prepareStatement("INSERT INTO usuario VALUES(?, ?, ?)");
+                st.setString(1, txtUsuario.getText());
+                st.setString(2, txtSenha.getText());
+                st.setString(3, cmbCargo.getSelectedItem().toString());
+                st.executeUpdate(); //Executa o comando INSERT
+                JOptionPane.showMessageDialog(btnSalvar, "Dados salvos com sucesso");
+                txtUsuario.setText("");
+                txtSenha.setText("");
+                txtRepitaSenha.setText("");
+                txtUsuario.requestFocus();
+            } else {
+                JOptionPane.showMessageDialog(null, "As senhas não coincidem");
+                txtSenha.requestFocus();
+            }
         } catch (ClassNotFoundException ex) {
-            JOptionPane.showMessageDialog(btnSalvar,"Você não tem o driver na biblioteca");
+            JOptionPane.showMessageDialog(btnSalvar, "Você não tem o driver na biblioteca");
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(btnSalvar,"Algum parâmetro do BD está incorreto");
+            JOptionPane.showMessageDialog(btnSalvar, "Algum parâmetro do BD está incorreto");
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
