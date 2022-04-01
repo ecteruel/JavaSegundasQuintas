@@ -109,7 +109,7 @@ public class TelaCadastroUsuario extends javax.swing.JFrame {
         try {
             Connection conexao;
             PreparedStatement st;
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             conexao = DriverManager.getConnection("jdbc:mysql://localhost:3306/bancopadaria", "root", "teruel");
             if (txtSenha.getText().equals(txtRepitaSenha.getText())) {
                 st = conexao.prepareStatement("INSERT INTO usuario VALUES(?, ?, ?)");

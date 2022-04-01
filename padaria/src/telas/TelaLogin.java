@@ -44,6 +44,11 @@ public class TelaLogin extends javax.swing.JFrame {
                 txtUsuarioActionPerformed(evt);
             }
         });
+        txtUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtUsuarioKeyPressed(evt);
+            }
+        });
         getContentPane().add(txtUsuario);
         txtUsuario.setBounds(90, 20, 230, 40);
 
@@ -90,7 +95,7 @@ public class TelaLogin extends javax.swing.JFrame {
         getContentPane().add(lblMensagem);
         lblMensagem.setBounds(130, 150, 130, 30);
 
-        setSize(new java.awt.Dimension(393, 252));
+        setSize(new java.awt.Dimension(404, 252));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -120,7 +125,7 @@ public class TelaLogin extends javax.swing.JFrame {
             PreparedStatement st;
             ResultSet resultado;
             //Conexão com o BD
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             conexao = DriverManager.getConnection("jdbc:mysql://localhost:3306/bancopadaria", "root", "teruel");
             //Busca o usuário na tabela do BD
             st = conexao.prepareStatement("SELECT * FROM usuario WHERE usuario=? AND senha=?");
@@ -128,6 +133,8 @@ public class TelaLogin extends javax.swing.JFrame {
             st.setString(2, pswSenha.getText());
             resultado = st.executeQuery(); //Executa o SELECT criado acima
             if (resultado.next()) { // Se encontrou o usuário na tabela
+                txtUsuario.setText("");
+                pswSenha.setText("");
                 TelaMenu tela;
                 tela = new TelaMenu();
                 tela.setVisible(true);
@@ -144,15 +151,19 @@ public class TelaLogin extends javax.swing.JFrame {
 
     private void pswSenhaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pswSenhaKeyPressed
         if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
-            btnEntrar.requestFocus(); //Método que tienes que crearte
+            btnEntrar.doClick(); //Método que tienes que crearte
         }
     }//GEN-LAST:event_pswSenhaKeyPressed
 
     private void btnEntrarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnEntrarKeyPressed
-         if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
-            btnEntrar.doClick();//Método que tienes que crearte
-        }
+
     }//GEN-LAST:event_btnEntrarKeyPressed
+
+    private void txtUsuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUsuarioKeyPressed
+        if (evt.getKeyCode()==java.awt.event.KeyEvent.VK_ENTER){
+            pswSenha.requestFocus();
+        }
+    }//GEN-LAST:event_txtUsuarioKeyPressed
 
     /**
      * @param args the command line arguments

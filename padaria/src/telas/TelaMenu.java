@@ -26,11 +26,93 @@ public class TelaMenu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        lblFundo = new javax.swing.JLabel();
+        barMenu = new javax.swing.JMenuBar();
+        mnuProdutos = new javax.swing.JMenu();
+        itmCadastrarProdutos = new javax.swing.JMenuItem();
+        itmAlterarProdutos = new javax.swing.JMenuItem();
+        itmExcluirProdutos = new javax.swing.JMenuItem();
+        itmRelatoriosProdutos = new javax.swing.JMenuItem();
+        mnuFuncionarios = new javax.swing.JMenu();
+        itmCadastrarFuncionarios = new javax.swing.JMenuItem();
+        itmAlterarFuncionarios = new javax.swing.JMenuItem();
+        itmExcluirFuncionarios = new javax.swing.JMenuItem();
+        itmRelatorioFuncionarios = new javax.swing.JMenuItem();
+        mnuAjuda = new javax.swing.JMenu();
+        itmManual = new javax.swing.JMenuItem();
+
+        setTitle("Menu");
         getContentPane().setLayout(null);
+
+        lblFundo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/telas/fundoPadaria.jpg"))); // NOI18N
+        getContentPane().add(lblFundo);
+        lblFundo.setBounds(0, 0, 690, 390);
+
+        mnuProdutos.setMnemonic('P');
+        mnuProdutos.setText("Produtos");
+
+        itmCadastrarProdutos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        itmCadastrarProdutos.setText("Cadastrar");
+        mnuProdutos.add(itmCadastrarProdutos);
+
+        itmAlterarProdutos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        itmAlterarProdutos.setText("Alterar");
+        itmAlterarProdutos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itmAlterarProdutosActionPerformed(evt);
+            }
+        });
+        mnuProdutos.add(itmAlterarProdutos);
+
+        itmExcluirProdutos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        itmExcluirProdutos.setText("Excluir");
+        mnuProdutos.add(itmExcluirProdutos);
+
+        itmRelatoriosProdutos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        itmRelatoriosProdutos.setText("Relatórios");
+        mnuProdutos.add(itmRelatoriosProdutos);
+
+        barMenu.add(mnuProdutos);
+
+        mnuFuncionarios.setMnemonic('F');
+        mnuFuncionarios.setText("Funcionários");
+
+        itmCadastrarFuncionarios.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        itmCadastrarFuncionarios.setText("Cadastrar");
+        mnuFuncionarios.add(itmCadastrarFuncionarios);
+
+        itmAlterarFuncionarios.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        itmAlterarFuncionarios.setText("Alterar");
+        mnuFuncionarios.add(itmAlterarFuncionarios);
+
+        itmExcluirFuncionarios.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        itmExcluirFuncionarios.setText("Excluir");
+        mnuFuncionarios.add(itmExcluirFuncionarios);
+
+        itmRelatorioFuncionarios.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        itmRelatorioFuncionarios.setText("Relatórios");
+        mnuFuncionarios.add(itmRelatorioFuncionarios);
+
+        barMenu.add(mnuFuncionarios);
+
+        mnuAjuda.setMnemonic('A');
+        mnuAjuda.setText("Ajuda");
+
+        itmManual.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        itmManual.setText("Manual");
+        mnuAjuda.add(itmManual);
+
+        barMenu.add(mnuAjuda);
+
+        setJMenuBar(barMenu);
 
         setSize(new java.awt.Dimension(710, 444));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void itmAlterarProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmAlterarProdutosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_itmAlterarProdutosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -68,5 +150,19 @@ public class TelaMenu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuBar barMenu;
+    private javax.swing.JMenuItem itmAlterarFuncionarios;
+    private javax.swing.JMenuItem itmAlterarProdutos;
+    private javax.swing.JMenuItem itmCadastrarFuncionarios;
+    private javax.swing.JMenuItem itmCadastrarProdutos;
+    private javax.swing.JMenuItem itmExcluirFuncionarios;
+    private javax.swing.JMenuItem itmExcluirProdutos;
+    private javax.swing.JMenuItem itmManual;
+    private javax.swing.JMenuItem itmRelatorioFuncionarios;
+    private javax.swing.JMenuItem itmRelatoriosProdutos;
+    private javax.swing.JLabel lblFundo;
+    private javax.swing.JMenu mnuAjuda;
+    private javax.swing.JMenu mnuFuncionarios;
+    private javax.swing.JMenu mnuProdutos;
     // End of variables declaration//GEN-END:variables
 }
