@@ -16,7 +16,30 @@ public class TelaMenu extends javax.swing.JFrame {
     public TelaMenu() {
         initComponents();
     }
-
+    
+    public TelaMenu(String usuario, String cargo) {
+        initComponents();
+        lblSaudacao.setText("Bem-vindo(a), " + usuario);
+        if (cargo.equalsIgnoreCase("caixa") || cargo.equalsIgnoreCase("balconista")){
+         habilitar();
+        }
+    }
+  
+    private void habilitar(){
+          itmCadastrarProdutos.setEnabled(false);
+          itmAlterarProdutos.setEnabled(false);          
+          itmExcluirProdutos.setEnabled(false);
+          itmRelatoriosProdutos.setEnabled(true);
+          itmCadastrarFuncionarios.setEnabled(false);
+          itmAlterarFuncionarios.setEnabled(false);          
+          itmExcluirFuncionarios.setEnabled(false);
+          itmRelatorioFuncionarios.setEnabled(false);         
+    }    
+        
+    public TelaMenu(String cargo) {
+        initComponents();
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,6 +50,7 @@ public class TelaMenu extends javax.swing.JFrame {
     private void initComponents() {
 
         lblFundo = new javax.swing.JLabel();
+        lblSaudacao = new javax.swing.JLabel();
         barMenu = new javax.swing.JMenuBar();
         mnuProdutos = new javax.swing.JMenu();
         itmCadastrarProdutos = new javax.swing.JMenuItem();
@@ -38,15 +62,17 @@ public class TelaMenu extends javax.swing.JFrame {
         itmAlterarFuncionarios = new javax.swing.JMenuItem();
         itmExcluirFuncionarios = new javax.swing.JMenuItem();
         itmRelatorioFuncionarios = new javax.swing.JMenuItem();
-        mnuAjuda = new javax.swing.JMenu();
-        itmManual = new javax.swing.JMenuItem();
 
         setTitle("Menu");
         getContentPane().setLayout(null);
 
         lblFundo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/telas/fundoPadaria.jpg"))); // NOI18N
         getContentPane().add(lblFundo);
-        lblFundo.setBounds(0, 0, 690, 390);
+        lblFundo.setBounds(0, 100, 690, 290);
+
+        lblSaudacao.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        getContentPane().add(lblSaudacao);
+        lblSaudacao.setBounds(340, 0, 350, 30);
 
         mnuProdutos.setMnemonic('P');
         mnuProdutos.setText("Produtos");
@@ -94,15 +120,6 @@ public class TelaMenu extends javax.swing.JFrame {
         mnuFuncionarios.add(itmRelatorioFuncionarios);
 
         barMenu.add(mnuFuncionarios);
-
-        mnuAjuda.setMnemonic('A');
-        mnuAjuda.setText("Ajuda");
-
-        itmManual.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        itmManual.setText("Manual");
-        mnuAjuda.add(itmManual);
-
-        barMenu.add(mnuAjuda);
 
         setJMenuBar(barMenu);
 
@@ -157,11 +174,10 @@ public class TelaMenu extends javax.swing.JFrame {
     private javax.swing.JMenuItem itmCadastrarProdutos;
     private javax.swing.JMenuItem itmExcluirFuncionarios;
     private javax.swing.JMenuItem itmExcluirProdutos;
-    private javax.swing.JMenuItem itmManual;
     private javax.swing.JMenuItem itmRelatorioFuncionarios;
     private javax.swing.JMenuItem itmRelatoriosProdutos;
     private javax.swing.JLabel lblFundo;
-    private javax.swing.JMenu mnuAjuda;
+    private javax.swing.JLabel lblSaudacao;
     private javax.swing.JMenu mnuFuncionarios;
     private javax.swing.JMenu mnuProdutos;
     // End of variables declaration//GEN-END:variables

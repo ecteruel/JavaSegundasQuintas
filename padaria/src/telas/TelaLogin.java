@@ -136,7 +136,8 @@ public class TelaLogin extends javax.swing.JFrame {
                 txtUsuario.setText("");
                 pswSenha.setText("");
                 TelaMenu tela;
-                tela = new TelaMenu();
+                //tela = new TelaMenu();
+                tela = new TelaMenu(resultado.getString("usuario"),resultado.getString("cargo"));
                 tela.setVisible(true);
             } else { //Senão encontrou o usuário
                 JOptionPane.showMessageDialog(null, "Usuário e/ou senha inválidos");
