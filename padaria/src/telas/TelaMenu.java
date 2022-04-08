@@ -1,45 +1,38 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package telas;
 
-/**
- *
- * @author Evandro Teruel
- */
+import java.sql.*;
+import javax.swing.JOptionPane;
+
 public class TelaMenu extends javax.swing.JFrame {
 
-    /**
-     * Creates new form TelaMenu
-     */
     public TelaMenu() {
         initComponents();
     }
-    
+
     public TelaMenu(String usuario, String cargo) {
         initComponents();
+        pnlCadastrarProdutos.setVisible(false);
         lblSaudacao.setText("Bem-vindo(a), " + usuario);
-        if (cargo.equalsIgnoreCase("caixa") || cargo.equalsIgnoreCase("balconista")){
-         habilitar();
+        if (cargo.equalsIgnoreCase("caixa") || cargo.equalsIgnoreCase("balconista")) {
+            habilitar();
         }
     }
-  
-    private void habilitar(){
-          itmCadastrarProdutos.setEnabled(false);
-          itmAlterarProdutos.setEnabled(false);          
-          itmExcluirProdutos.setEnabled(false);
-          itmRelatoriosProdutos.setEnabled(true);
-          itmCadastrarFuncionarios.setEnabled(false);
-          itmAlterarFuncionarios.setEnabled(false);          
-          itmExcluirFuncionarios.setEnabled(false);
-          itmRelatorioFuncionarios.setEnabled(false);         
-    }    
-        
+
+    private void habilitar() {
+        itmCadastrarProdutos.setEnabled(false);
+        itmAlterarProdutos.setEnabled(false);
+        itmExcluirProdutos.setEnabled(false);
+        itmRelatoriosProdutos.setEnabled(true);
+        itmCadastrarFuncionarios.setEnabled(false);
+        itmAlterarFuncionarios.setEnabled(false);
+        itmExcluirFuncionarios.setEnabled(false);
+        itmRelatorioFuncionarios.setEnabled(false);
+    }
+
     public TelaMenu(String cargo) {
         initComponents();
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -49,8 +42,18 @@ public class TelaMenu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblFundo = new javax.swing.JLabel();
         lblSaudacao = new javax.swing.JLabel();
+        lblFundo = new javax.swing.JLabel();
+        pnlCadastrarProdutos = new javax.swing.JPanel();
+        lblCodigo = new javax.swing.JLabel();
+        txtCodigo = new javax.swing.JTextField();
+        lblNome = new javax.swing.JLabel();
+        txtNome = new javax.swing.JTextField();
+        lblCategoria = new javax.swing.JLabel();
+        txtCategoria = new javax.swing.JTextField();
+        lblPreco = new javax.swing.JLabel();
+        txtPreco = new javax.swing.JTextField();
+        btnSalvar = new javax.swing.JButton();
         barMenu = new javax.swing.JMenuBar();
         mnuProdutos = new javax.swing.JMenu();
         itmCadastrarProdutos = new javax.swing.JMenuItem();
@@ -66,19 +69,62 @@ public class TelaMenu extends javax.swing.JFrame {
         setTitle("Menu");
         getContentPane().setLayout(null);
 
-        lblFundo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/telas/fundoPadaria.jpg"))); // NOI18N
-        getContentPane().add(lblFundo);
-        lblFundo.setBounds(0, 100, 690, 290);
-
         lblSaudacao.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         getContentPane().add(lblSaudacao);
         lblSaudacao.setBounds(340, 0, 350, 30);
+
+        lblFundo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/telas/fundoPadaria.jpg"))); // NOI18N
+        getContentPane().add(lblFundo);
+        lblFundo.setBounds(550, 320, 140, 70);
+
+        pnlCadastrarProdutos.setLayout(null);
+
+        lblCodigo.setText("Código");
+        pnlCadastrarProdutos.add(lblCodigo);
+        lblCodigo.setBounds(20, 20, 70, 20);
+        pnlCadastrarProdutos.add(txtCodigo);
+        txtCodigo.setBounds(110, 10, 170, 40);
+
+        lblNome.setText("Nome");
+        pnlCadastrarProdutos.add(lblNome);
+        lblNome.setBounds(20, 70, 70, 20);
+        pnlCadastrarProdutos.add(txtNome);
+        txtNome.setBounds(110, 60, 170, 40);
+
+        lblCategoria.setText("Categoria");
+        pnlCadastrarProdutos.add(lblCategoria);
+        lblCategoria.setBounds(20, 120, 70, 20);
+        pnlCadastrarProdutos.add(txtCategoria);
+        txtCategoria.setBounds(110, 110, 170, 40);
+
+        lblPreco.setText("Preço");
+        pnlCadastrarProdutos.add(lblPreco);
+        lblPreco.setBounds(20, 170, 70, 20);
+        pnlCadastrarProdutos.add(txtPreco);
+        txtPreco.setBounds(110, 160, 170, 40);
+
+        btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
+        pnlCadastrarProdutos.add(btnSalvar);
+        btnSalvar.setBounds(20, 220, 190, 40);
+
+        getContentPane().add(pnlCadastrarProdutos);
+        pnlCadastrarProdutos.setBounds(10, 20, 550, 290);
 
         mnuProdutos.setMnemonic('P');
         mnuProdutos.setText("Produtos");
 
         itmCadastrarProdutos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
         itmCadastrarProdutos.setText("Cadastrar");
+        itmCadastrarProdutos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itmCadastrarProdutosActionPerformed(evt);
+            }
+        });
         mnuProdutos.add(itmCadastrarProdutos);
 
         itmAlterarProdutos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
@@ -131,6 +177,24 @@ public class TelaMenu extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_itmAlterarProdutosActionPerformed
 
+    private void itmCadastrarProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmCadastrarProdutosActionPerformed
+        pnlCadastrarProdutos.setVisible(true);
+    }//GEN-LAST:event_itmCadastrarProdutosActionPerformed
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        try {
+            Connection conexao;
+            PreparedStatement st;
+            Class.forName("com.mysql.jdbc.Driver");
+            conexao = DriverManager.getConnection("jdbc:mysql://localhost:3306/bancopadaria", "root", "teruel");
+            // Aqui a parte que vai salvar
+        } catch (ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, "Você não tem o driver na biblioteca " + ex.getMessage());
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Algum parâmetro do BD está incorreto " + ex.getMessage());
+        }
+    }//GEN-LAST:event_btnSalvarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -168,6 +232,7 @@ public class TelaMenu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar barMenu;
+    private javax.swing.JButton btnSalvar;
     private javax.swing.JMenuItem itmAlterarFuncionarios;
     private javax.swing.JMenuItem itmAlterarProdutos;
     private javax.swing.JMenuItem itmCadastrarFuncionarios;
@@ -176,9 +241,18 @@ public class TelaMenu extends javax.swing.JFrame {
     private javax.swing.JMenuItem itmExcluirProdutos;
     private javax.swing.JMenuItem itmRelatorioFuncionarios;
     private javax.swing.JMenuItem itmRelatoriosProdutos;
+    private javax.swing.JLabel lblCategoria;
+    private javax.swing.JLabel lblCodigo;
     private javax.swing.JLabel lblFundo;
+    private javax.swing.JLabel lblNome;
+    private javax.swing.JLabel lblPreco;
     private javax.swing.JLabel lblSaudacao;
     private javax.swing.JMenu mnuFuncionarios;
     private javax.swing.JMenu mnuProdutos;
+    private javax.swing.JPanel pnlCadastrarProdutos;
+    private javax.swing.JTextField txtCategoria;
+    private javax.swing.JTextField txtCodigo;
+    private javax.swing.JTextField txtNome;
+    private javax.swing.JTextField txtPreco;
     // End of variables declaration//GEN-END:variables
 }
