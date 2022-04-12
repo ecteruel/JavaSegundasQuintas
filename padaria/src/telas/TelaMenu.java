@@ -54,6 +54,7 @@ public class TelaMenu extends javax.swing.JFrame {
         lblPreco = new javax.swing.JLabel();
         txtPreco = new javax.swing.JTextField();
         btnSalvar = new javax.swing.JButton();
+        btnConsultar = new javax.swing.JButton();
         barMenu = new javax.swing.JMenuBar();
         mnuProdutos = new javax.swing.JMenu();
         itmCadastrarProdutos = new javax.swing.JMenuItem();
@@ -75,7 +76,7 @@ public class TelaMenu extends javax.swing.JFrame {
 
         lblFundo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/telas/fundoPadaria.jpg"))); // NOI18N
         getContentPane().add(lblFundo);
-        lblFundo.setBounds(550, 320, 140, 70);
+        lblFundo.setBounds(540, 290, 150, 90);
 
         pnlCadastrarProdutos.setLayout(null);
 
@@ -89,19 +90,19 @@ public class TelaMenu extends javax.swing.JFrame {
         pnlCadastrarProdutos.add(lblNome);
         lblNome.setBounds(20, 70, 70, 20);
         pnlCadastrarProdutos.add(txtNome);
-        txtNome.setBounds(110, 60, 170, 40);
+        txtNome.setBounds(110, 60, 350, 40);
 
         lblCategoria.setText("Categoria");
         pnlCadastrarProdutos.add(lblCategoria);
         lblCategoria.setBounds(20, 120, 70, 20);
         pnlCadastrarProdutos.add(txtCategoria);
-        txtCategoria.setBounds(110, 110, 170, 40);
+        txtCategoria.setBounds(110, 110, 240, 40);
 
         lblPreco.setText("Preço");
         pnlCadastrarProdutos.add(lblPreco);
         lblPreco.setBounds(20, 170, 70, 20);
         pnlCadastrarProdutos.add(txtPreco);
-        txtPreco.setBounds(110, 160, 170, 40);
+        txtPreco.setBounds(110, 160, 150, 40);
 
         btnSalvar.setText("Salvar");
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
@@ -110,10 +111,14 @@ public class TelaMenu extends javax.swing.JFrame {
             }
         });
         pnlCadastrarProdutos.add(btnSalvar);
-        btnSalvar.setBounds(20, 220, 190, 40);
+        btnSalvar.setBounds(20, 220, 150, 40);
+
+        btnConsultar.setText("Consultar");
+        pnlCadastrarProdutos.add(btnConsultar);
+        btnConsultar.setBounds(20, 220, 150, 40);
 
         getContentPane().add(pnlCadastrarProdutos);
-        pnlCadastrarProdutos.setBounds(10, 20, 550, 290);
+        pnlCadastrarProdutos.setBounds(20, 20, 580, 280);
 
         mnuProdutos.setMnemonic('P');
         mnuProdutos.setText("Produtos");
@@ -142,6 +147,11 @@ public class TelaMenu extends javax.swing.JFrame {
 
         itmRelatoriosProdutos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
         itmRelatoriosProdutos.setText("Relatórios");
+        itmRelatoriosProdutos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itmRelatoriosProdutosActionPerformed(evt);
+            }
+        });
         mnuProdutos.add(itmRelatoriosProdutos);
 
         barMenu.add(mnuProdutos);
@@ -179,21 +189,49 @@ public class TelaMenu extends javax.swing.JFrame {
 
     private void itmCadastrarProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmCadastrarProdutosActionPerformed
         pnlCadastrarProdutos.setVisible(true);
+        btnSalvar.setVisible(true);
+        btnConsultar.setVisible(false);
     }//GEN-LAST:event_itmCadastrarProdutosActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         try {
+            // Declara as varáveis
             Connection conexao;
             PreparedStatement st;
-            Class.forName("com.mysql.jdbc.Driver");
+            // fazer a conexão com o Banco de dados
+            Class.forName("com.mysql.cj.jdbc.Driver");
             conexao = DriverManager.getConnection("jdbc:mysql://localhost:3306/bancopadaria", "root", "teruel");
-            // Aqui a parte que vai salvar
+            // Inserir os dados na tabela
+            st = conexao.prepareStatement("INSERT INTO produtos VALUES(?,?,?,?)");
+            st.setString(1, txtCodigo.getText());
+            st.setString(2, txtNome.getText());
+            st.setString(3, txtCategoria.getText());
+            st.setDouble(4, Double.parseDouble(txtPreco.getText()));
+            st.executeUpdate();
+            //Mostrar mensagem indicando sucesso na operação
+            JOptionPane.showMessageDialog(btnSalvar, "Produto salvo com sucesso");            
+            txtCodigo.setText("");
+            txtNome.setText("");
+            txtCategoria.setText("");
+            txtPreco.setText("");
+            txtCodigo.requestFocus();
         } catch (ClassNotFoundException ex) {
-            JOptionPane.showMessageDialog(null, "Você não tem o driver na biblioteca " + ex.getMessage());
+              JOptionPane.showMessageDialog(null, "Erro " + ex.getMessage() + "\nEntre em contato com o administrador e informe"); 
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Algum parâmetro do BD está incorreto " + ex.getMessage());
+            if(ex.getErrorCode()==1062){    
+              JOptionPane.showMessageDialog(null, "Este código de produto já está cadastrado");
+              txtCodigo.requestFocus();
+            }else{
+              JOptionPane.showMessageDialog(null, "Erro número " + ex.getErrorCode() + "\nEntre em contato com o administrador e informe o número do erro"); 
+            }
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void itmRelatoriosProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmRelatoriosProdutosActionPerformed
+        pnlCadastrarProdutos.setVisible(true);
+        btnSalvar.setVisible(false);
+        btnConsultar.setVisible(true);
+    }//GEN-LAST:event_itmRelatoriosProdutosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -232,6 +270,7 @@ public class TelaMenu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar barMenu;
+    private javax.swing.JButton btnConsultar;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JMenuItem itmAlterarFuncionarios;
     private javax.swing.JMenuItem itmAlterarProdutos;
