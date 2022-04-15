@@ -1,5 +1,6 @@
 package telas;
 
+import java.awt.Color;
 import java.sql.*;
 import javax.swing.JOptionPane;
 
@@ -13,6 +14,7 @@ public class TelaMenu extends javax.swing.JFrame {
         initComponents();
         pnlCadastrarProdutos.setVisible(false);
         lblSaudacao.setText("Bem-vindo(a), " + usuario);
+        btnExcluir.setVisible(false);
         if (cargo.equalsIgnoreCase("caixa") || cargo.equalsIgnoreCase("balconista")) {
             habilitar();
         }
@@ -55,6 +57,7 @@ public class TelaMenu extends javax.swing.JFrame {
         txtPreco = new javax.swing.JTextField();
         btnSalvar = new javax.swing.JButton();
         btnConsultar = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
         barMenu = new javax.swing.JMenuBar();
         mnuProdutos = new javax.swing.JMenu();
         itmCadastrarProdutos = new javax.swing.JMenuItem();
@@ -72,7 +75,7 @@ public class TelaMenu extends javax.swing.JFrame {
 
         lblSaudacao.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         getContentPane().add(lblSaudacao);
-        lblSaudacao.setBounds(340, 0, 350, 30);
+        lblSaudacao.setBounds(470, 0, 220, 30);
 
         lblFundo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/telas/fundoPadaria.jpg"))); // NOI18N
         getContentPane().add(lblFundo);
@@ -113,9 +116,23 @@ public class TelaMenu extends javax.swing.JFrame {
         pnlCadastrarProdutos.add(btnSalvar);
         btnSalvar.setBounds(20, 220, 150, 40);
 
-        btnConsultar.setText("Consultar");
+        btnConsultar.setText("Buscar");
+        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarActionPerformed(evt);
+            }
+        });
         pnlCadastrarProdutos.add(btnConsultar);
-        btnConsultar.setBounds(20, 220, 150, 40);
+        btnConsultar.setBounds(290, 10, 100, 40);
+
+        btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
+        pnlCadastrarProdutos.add(btnExcluir);
+        btnExcluir.setBounds(190, 220, 140, 40);
 
         getContentPane().add(pnlCadastrarProdutos);
         pnlCadastrarProdutos.setBounds(20, 20, 580, 280);
@@ -143,6 +160,11 @@ public class TelaMenu extends javax.swing.JFrame {
 
         itmExcluirProdutos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
         itmExcluirProdutos.setText("Excluir");
+        itmExcluirProdutos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itmExcluirProdutosActionPerformed(evt);
+            }
+        });
         mnuProdutos.add(itmExcluirProdutos);
 
         itmRelatoriosProdutos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
@@ -209,20 +231,20 @@ public class TelaMenu extends javax.swing.JFrame {
             st.setDouble(4, Double.parseDouble(txtPreco.getText()));
             st.executeUpdate();
             //Mostrar mensagem indicando sucesso na operação
-            JOptionPane.showMessageDialog(btnSalvar, "Produto salvo com sucesso");            
+            JOptionPane.showMessageDialog(btnSalvar, "Produto salvo com sucesso");
             txtCodigo.setText("");
             txtNome.setText("");
             txtCategoria.setText("");
             txtPreco.setText("");
             txtCodigo.requestFocus();
         } catch (ClassNotFoundException ex) {
-              JOptionPane.showMessageDialog(null, "Erro " + ex.getMessage() + "\nEntre em contato com o administrador e informe"); 
+            JOptionPane.showMessageDialog(null, "Erro " + ex.getMessage() + "\nEntre em contato com o administrador e informe");
         } catch (SQLException ex) {
-            if(ex.getErrorCode()==1062){    
-              JOptionPane.showMessageDialog(null, "Este código de produto já está cadastrado");
-              txtCodigo.requestFocus();
-            }else{
-              JOptionPane.showMessageDialog(null, "Erro número " + ex.getErrorCode() + "\nEntre em contato com o administrador e informe o número do erro"); 
+            if (ex.getErrorCode() == 1062) {
+                JOptionPane.showMessageDialog(null, "Este código de produto já está cadastrado");
+                txtCodigo.requestFocus();
+            } else {
+                JOptionPane.showMessageDialog(null, "Erro número " + ex.getErrorCode() + "\nEntre em contato com o administrador e informe o número do erro");
             }
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
@@ -232,6 +254,75 @@ public class TelaMenu extends javax.swing.JFrame {
         btnSalvar.setVisible(false);
         btnConsultar.setVisible(true);
     }//GEN-LAST:event_itmRelatoriosProdutosActionPerformed
+
+    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        if (txtCodigo.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Preencha o código do produto");
+            txtCodigo.requestFocus();
+            return; // para a execução nesta linha (stop)       
+        }
+        try {
+            Connection conexao;
+            PreparedStatement st;
+            ResultSet resultado;
+            //Conexão com o BD
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conexao = DriverManager.getConnection("jdbc:mysql://localhost:3306/bancopadaria", "root", "teruel");
+            //Busca o código do produto na tabela produtos do BD
+            st = conexao.prepareStatement("SELECT * FROM produtos WHERE codigo=?");
+            st.setString(1, txtCodigo.getText());
+            resultado = st.executeQuery(); //Executa o SELECT criado acima
+            if (resultado.next()) { // Se encontrou o código do produto na tabela
+                txtNome.setText(resultado.getString("nome"));
+                txtCategoria.setText(resultado.getString("categoria"));
+                txtPreco.setText(resultado.getString("preco"));
+                btnExcluir.setVisible(true);
+            } else { //Senão encontrou o produto
+                JOptionPane.showMessageDialog(null, "Produto não encontrado");
+                txtCodigo.requestFocus();
+            }
+        } catch (ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(btnConsultar, "Você não tem o driver na biblioteca");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(btnConsultar, "Algum parâmetro do BD está incorreto");
+        }
+
+    }//GEN-LAST:event_btnConsultarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        try {
+            //CONECTAR COM O BANCO DE DADOS
+            Connection conexao;
+            PreparedStatement st;
+            Class.forName("com.mysql.jdbc.Driver");
+            conexao = DriverManager.getConnection("jdbc:mysql://localhost:3306/bancopadaria", "root", "teruel");
+            // DELETAR O PRODUTO PELO CÓDIGO INFORMADO
+            st = conexao.prepareStatement("DELETE FROM produtos WHERE codigo=?");
+            st.setString(1, txtCodigo.getText());
+            int res = st.executeUpdate();
+            //VERIFICAR SE O PRODUTO FOI OU NÃO DELETADO E INFORMAR
+            if (res == 1) { // Se excluiu da tabela
+                JOptionPane.showMessageDialog(null, "Produto excluído com sucesso");
+                txtCodigo.setText("");
+                txtNome.setText("");
+                txtCategoria.setText("");
+                txtPreco.setText("");
+                txtCodigo.requestFocus();
+                btnExcluir.setVisible(false);
+            } else { // Se não excluiu da tabela
+                JOptionPane.showMessageDialog(null, "Não foi possível excluir o produto com este código");
+            }
+        } catch (ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, "Você não tem o driver na biblioteca " + ex.getMessage());
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Algum parâmetro do BD está incorreto" + ex.getMessage());
+        }
+
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void itmExcluirProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmExcluirProdutosActionPerformed
+       itmRelatoriosProdutos.doClick();
+    }//GEN-LAST:event_itmExcluirProdutosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -271,6 +362,7 @@ public class TelaMenu extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar barMenu;
     private javax.swing.JButton btnConsultar;
+    private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JMenuItem itmAlterarFuncionarios;
     private javax.swing.JMenuItem itmAlterarProdutos;
