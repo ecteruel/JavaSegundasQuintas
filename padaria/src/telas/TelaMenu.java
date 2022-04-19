@@ -45,7 +45,6 @@ public class TelaMenu extends javax.swing.JFrame {
     private void initComponents() {
 
         lblSaudacao = new javax.swing.JLabel();
-        lblFundo = new javax.swing.JLabel();
         pnlCadastrarProdutos = new javax.swing.JPanel();
         lblCodigo = new javax.swing.JLabel();
         txtCodigo = new javax.swing.JTextField();
@@ -58,6 +57,9 @@ public class TelaMenu extends javax.swing.JFrame {
         btnSalvar = new javax.swing.JButton();
         btnConsultar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
+        btnAlterar = new javax.swing.JButton();
+        btnOutrosRelatorios = new javax.swing.JButton();
+        lblFundo = new javax.swing.JLabel();
         barMenu = new javax.swing.JMenuBar();
         mnuProdutos = new javax.swing.JMenu();
         itmCadastrarProdutos = new javax.swing.JMenuItem();
@@ -76,10 +78,6 @@ public class TelaMenu extends javax.swing.JFrame {
         lblSaudacao.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         getContentPane().add(lblSaudacao);
         lblSaudacao.setBounds(470, 0, 220, 30);
-
-        lblFundo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/telas/fundoPadaria.jpg"))); // NOI18N
-        getContentPane().add(lblFundo);
-        lblFundo.setBounds(540, 290, 150, 90);
 
         pnlCadastrarProdutos.setLayout(null);
 
@@ -132,10 +130,32 @@ public class TelaMenu extends javax.swing.JFrame {
             }
         });
         pnlCadastrarProdutos.add(btnExcluir);
-        btnExcluir.setBounds(190, 220, 140, 40);
+        btnExcluir.setBounds(180, 220, 140, 40);
+
+        btnAlterar.setText("Salvar alteração");
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
+        pnlCadastrarProdutos.add(btnAlterar);
+        btnAlterar.setBounds(340, 220, 140, 40);
+
+        btnOutrosRelatorios.setText("Outros relatórios");
+        btnOutrosRelatorios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOutrosRelatoriosActionPerformed(evt);
+            }
+        });
+        pnlCadastrarProdutos.add(btnOutrosRelatorios);
+        btnOutrosRelatorios.setBounds(400, 10, 150, 40);
 
         getContentPane().add(pnlCadastrarProdutos);
-        pnlCadastrarProdutos.setBounds(20, 20, 580, 280);
+        pnlCadastrarProdutos.setBounds(20, 50, 670, 270);
+
+        lblFundo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/telas/fundoPadaria.jpg"))); // NOI18N
+        getContentPane().add(lblFundo);
+        lblFundo.setBounds(0, 0, 720, 400);
 
         mnuProdutos.setMnemonic('P');
         mnuProdutos.setText("Produtos");
@@ -201,18 +221,26 @@ public class TelaMenu extends javax.swing.JFrame {
 
         setJMenuBar(barMenu);
 
-        setSize(new java.awt.Dimension(710, 444));
+        setSize(new java.awt.Dimension(758, 454));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void itmAlterarProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmAlterarProdutosActionPerformed
-        // TODO add your handling code here:
+        pnlCadastrarProdutos.setVisible(true);
+        btnSalvar.setVisible(false);
+        btnConsultar.setVisible(true);
+        btnAlterar.setVisible(false);
+        btnExcluir.setVisible(false);
+        btnOutrosRelatorios.setVisible(false);
     }//GEN-LAST:event_itmAlterarProdutosActionPerformed
 
     private void itmCadastrarProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmCadastrarProdutosActionPerformed
         pnlCadastrarProdutos.setVisible(true);
         btnSalvar.setVisible(true);
         btnConsultar.setVisible(false);
+        btnAlterar.setVisible(false);
+        btnExcluir.setVisible(false);
+        btnOutrosRelatorios.setVisible(false);
     }//GEN-LAST:event_itmCadastrarProdutosActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
@@ -253,6 +281,9 @@ public class TelaMenu extends javax.swing.JFrame {
         pnlCadastrarProdutos.setVisible(true);
         btnSalvar.setVisible(false);
         btnConsultar.setVisible(true);
+        btnAlterar.setVisible(false);
+        btnExcluir.setVisible(false);
+        btnOutrosRelatorios.setVisible(true);
     }//GEN-LAST:event_itmRelatoriosProdutosActionPerformed
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
@@ -277,6 +308,7 @@ public class TelaMenu extends javax.swing.JFrame {
                 txtCategoria.setText(resultado.getString("categoria"));
                 txtPreco.setText(resultado.getString("preco"));
                 btnExcluir.setVisible(true);
+                btnAlterar.setVisible(true);
             } else { //Senão encontrou o produto
                 JOptionPane.showMessageDialog(null, "Produto não encontrado");
                 txtCodigo.requestFocus();
@@ -309,6 +341,7 @@ public class TelaMenu extends javax.swing.JFrame {
                 txtPreco.setText("");
                 txtCodigo.requestFocus();
                 btnExcluir.setVisible(false);
+                btnAlterar.setVisible(false);
             } else { // Se não excluiu da tabela
                 JOptionPane.showMessageDialog(null, "Não foi possível excluir o produto com este código");
             }
@@ -321,8 +354,47 @@ public class TelaMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void itmExcluirProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmExcluirProdutosActionPerformed
-       itmRelatoriosProdutos.doClick();
+        pnlCadastrarProdutos.setVisible(true);
+        btnSalvar.setVisible(false);
+        btnConsultar.setVisible(true);
+        btnAlterar.setVisible(false);
+        btnExcluir.setVisible(false);
+        btnOutrosRelatorios.setVisible(false);
     }//GEN-LAST:event_itmExcluirProdutosActionPerformed
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        try {
+            Connection conexao;
+            PreparedStatement st;
+            Class.forName("com.mysql.jdbc.Driver");
+            conexao = DriverManager.getConnection("jdbc:mysql://localhost:3306/bancopadaria", "root", "teruel");
+            st = conexao.prepareStatement("UPDATE produtos SET nome = ?, categoria = ?, preco = ? WHERE codigo = ?");
+            st.setString(1, txtNome.getText());
+            st.setString(2, txtCategoria.getText());
+            st.setString(3, txtPreco.getText());
+            st.setString(4, txtCodigo.getText());
+            st.executeUpdate(); //Executa o comando SQL UPDATE
+            JOptionPane.showMessageDialog(null, "Alteração realizada com sucesso");
+            txtCodigo.setText("");
+            txtNome.setText("");
+            txtCategoria.setText("");
+            txtPreco.setText("");
+            txtCodigo.requestFocus();
+            btnExcluir.setVisible(false);
+            btnAlterar.setVisible(false);
+        } catch (ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, "Você não tem o driver na biblioteca " + ex.getMessage());
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Algum parâmetro do BD está incorreto" + ex.getMessage());
+        }
+
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void btnOutrosRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOutrosRelatoriosActionPerformed
+      TelaRelatorios tela;
+      tela = new TelaRelatorios();
+      tela.setVisible(true);
+    }//GEN-LAST:event_btnOutrosRelatoriosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -361,8 +433,10 @@ public class TelaMenu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar barMenu;
+    private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnConsultar;
     private javax.swing.JButton btnExcluir;
+    private javax.swing.JButton btnOutrosRelatorios;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JMenuItem itmAlterarFuncionarios;
     private javax.swing.JMenuItem itmAlterarProdutos;
