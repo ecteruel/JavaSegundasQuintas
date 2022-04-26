@@ -4,6 +4,14 @@
  */
 package telas;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Evandro Teruel
@@ -60,12 +68,17 @@ public class TelaRelatorios extends javax.swing.JFrame {
         txtCategoria.setBounds(440, 50, 140, 30);
 
         btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnBuscar);
-        btnBuscar.setBounds(440, 90, 140, 25);
+        btnBuscar.setBounds(440, 90, 140, 30);
 
         tblProdutos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null}
+
             },
             new String [] {
                 "Código", "Nome", "Categoria", "Preço"
@@ -79,6 +92,57 @@ public class TelaRelatorios extends javax.swing.JFrame {
         setSize(new java.awt.Dimension(716, 458));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        //1 - Pegar o conteúdo do combo de tipo de relatório
+        String tipoRelatorio;
+        tipoRelatorio = cmbTipoRelatorio.getSelectedItem().toString();
+        //2 - Conectar com o Banco de dados
+        try {
+            Connection conexao;
+            PreparedStatement st;
+            ResultSet resultado;
+            DefaultTableModel defTable;
+            Class.forName("com.mysql.jdbc.Driver");
+            conexao = DriverManager.getConnection("jdbc:mysql://localhost:3306/bancopadaria", "root", "teruel");
+            //Verifica o conteúdo do comboBox de tipo de relatório
+            if (tipoRelatorio.equalsIgnoreCase("Geral")) {
+                st = conexao.prepareStatement("SELECT * FROM produtos");
+                resultado = st.executeQuery();
+                defTable = (DefaultTableModel) tblProdutos.getModel();
+                defTable.setRowCount(0);
+                while (resultado.next()) {
+                    Object[] linha = {resultado.getString("codigo"), resultado.getString("nome"), resultado.getString("categoria"), resultado.getString("preco")};
+                    defTable.addRow(linha);
+                }
+            } else if (tipoRelatorio.equalsIgnoreCase("Por categoria")) {
+                st = conexao.prepareStatement("SELECT * FROM produtos WHERE categoria=?");
+                st.setString(1, txtCategoria.getText());
+                resultado = st.executeQuery();
+                defTable = (DefaultTableModel) tblProdutos.getModel();
+                defTable.setRowCount(0);
+                while (resultado.next()) {
+                    Object[] linha = {resultado.getString("codigo"), resultado.getString("nome"), resultado.getString("categoria"), resultado.getString("preco")};
+                    defTable.addRow(linha);
+                }
+            } else if (tipoRelatorio.equalsIgnoreCase("Por nome")) {
+                st = conexao.prepareStatement("SELECT * FROM produtos WHERE nome=?");
+                st.setString(1, txtNome.getText());
+                resultado = st.executeQuery();
+                defTable = (DefaultTableModel) tblProdutos.getModel();
+                defTable.setRowCount(0);
+                while (resultado.next()) {
+                    Object[] linha = {resultado.getString("codigo"), resultado.getString("nome"), resultado.getString("categoria"), resultado.getString("preco")};
+                    defTable.addRow(linha);
+                }
+            }
+
+        } catch (ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, "Você não tem o driver na biblioteca " + ex.getMessage());
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Algum parâmetro do BD está incorreto" + ex.getMessage());
+        }
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
     /**
      * @param args the command line arguments
