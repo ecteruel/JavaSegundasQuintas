@@ -17,6 +17,8 @@ public class TelaLogin extends javax.swing.JFrame {
 
     public TelaLogin() {
         initComponents();
+        lblMensagem.setVisible(false);
+        btnCadastrar.setVisible(false);
     }
 
     @SuppressWarnings("unchecked")
@@ -140,6 +142,8 @@ public class TelaLogin extends javax.swing.JFrame {
                 tela = new TelaMenu(resultado.getString("usuario"),resultado.getString("cargo"));
                 tela.setVisible(true);
             } else { //Senão encontrou o usuário
+                lblMensagem.setVisible(true);
+                btnCadastrar.setVisible(true);
                 JOptionPane.showMessageDialog(null, "Usuário e/ou senha inválidos");
                 txtUsuario.requestFocus();
             }

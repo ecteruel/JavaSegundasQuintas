@@ -17,12 +17,18 @@ import javax.swing.table.DefaultTableModel;
  * @author Evandro Teruel
  */
 public class TelaRelatorios extends javax.swing.JFrame {
-
+    
+    DefaultTableModel defTable;
     /**
      * Creates new form TelaRelatorios
      */
     public TelaRelatorios() {
         initComponents();
+        txtNome.setVisible(false);
+        lblNome.setVisible(false);
+        txtCategoria.setVisible(false);
+        lblCategoria.setVisible(false);
+        defTable = (DefaultTableModel) tblProdutos.getModel();
     }
 
     /**
@@ -52,20 +58,25 @@ public class TelaRelatorios extends javax.swing.JFrame {
         lblTipoRelatorio.setBounds(10, 10, 120, 50);
 
         cmbTipoRelatorio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Geral", "Por categoria", "Por nome" }));
+        cmbTipoRelatorio.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbTipoRelatorioItemStateChanged(evt);
+            }
+        });
         getContentPane().add(cmbTipoRelatorio);
         cmbTipoRelatorio.setBounds(130, 22, 160, 30);
 
         lblNome.setText("Nome do produto");
         getContentPane().add(lblNome);
-        lblNome.setBounds(320, 10, 120, 30);
+        lblNome.setBounds(320, 20, 120, 30);
         getContentPane().add(txtNome);
-        txtNome.setBounds(440, 10, 140, 30);
+        txtNome.setBounds(440, 20, 140, 30);
 
         lblCategoria.setText("Categoria");
         getContentPane().add(lblCategoria);
-        lblCategoria.setBounds(320, 40, 120, 30);
+        lblCategoria.setBounds(320, 20, 120, 30);
         getContentPane().add(txtCategoria);
-        txtCategoria.setBounds(440, 50, 140, 30);
+        txtCategoria.setBounds(440, 20, 140, 30);
 
         btnBuscar.setText("Buscar");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
@@ -74,7 +85,7 @@ public class TelaRelatorios extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnBuscar);
-        btnBuscar.setBounds(440, 90, 140, 30);
+        btnBuscar.setBounds(590, 20, 140, 30);
 
         tblProdutos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -87,9 +98,9 @@ public class TelaRelatorios extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tblProdutos);
 
         getContentPane().add(jScrollPane1);
-        jScrollPane1.setBounds(20, 130, 660, 270);
+        jScrollPane1.setBounds(20, 70, 710, 330);
 
-        setSize(new java.awt.Dimension(716, 458));
+        setSize(new java.awt.Dimension(766, 458));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -102,34 +113,34 @@ public class TelaRelatorios extends javax.swing.JFrame {
             Connection conexao;
             PreparedStatement st;
             ResultSet resultado;
-            DefaultTableModel defTable;
+
             Class.forName("com.mysql.jdbc.Driver");
             conexao = DriverManager.getConnection("jdbc:mysql://localhost:3306/bancopadaria", "root", "teruel");
             //Verifica o conteúdo do comboBox de tipo de relatório
             if (tipoRelatorio.equalsIgnoreCase("Geral")) {
                 st = conexao.prepareStatement("SELECT * FROM produtos");
                 resultado = st.executeQuery();
-                defTable = (DefaultTableModel) tblProdutos.getModel();
+                
                 defTable.setRowCount(0);
                 while (resultado.next()) {
                     Object[] linha = {resultado.getString("codigo"), resultado.getString("nome"), resultado.getString("categoria"), resultado.getString("preco")};
                     defTable.addRow(linha);
                 }
             } else if (tipoRelatorio.equalsIgnoreCase("Por categoria")) {
-                st = conexao.prepareStatement("SELECT * FROM produtos WHERE categoria=?");
-                st.setString(1, txtCategoria.getText());
+                st = conexao.prepareStatement("SELECT * FROM produtos WHERE categoria LIKE ?");
+                st.setString(1, "%" + txtCategoria.getText() + "%");
                 resultado = st.executeQuery();
-                defTable = (DefaultTableModel) tblProdutos.getModel();
+                
                 defTable.setRowCount(0);
                 while (resultado.next()) {
                     Object[] linha = {resultado.getString("codigo"), resultado.getString("nome"), resultado.getString("categoria"), resultado.getString("preco")};
                     defTable.addRow(linha);
                 }
             } else if (tipoRelatorio.equalsIgnoreCase("Por nome")) {
-                st = conexao.prepareStatement("SELECT * FROM produtos WHERE nome=?");
-                st.setString(1, txtNome.getText());
+                st = conexao.prepareStatement("SELECT * FROM produtos WHERE nome LIKE ?");
+                st.setString(1, "%" + txtNome.getText() + "%");
                 resultado = st.executeQuery();
-                defTable = (DefaultTableModel) tblProdutos.getModel();
+
                 defTable.setRowCount(0);
                 while (resultado.next()) {
                     Object[] linha = {resultado.getString("codigo"), resultado.getString("nome"), resultado.getString("categoria"), resultado.getString("preco")};
@@ -143,6 +154,30 @@ public class TelaRelatorios extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Algum parâmetro do BD está incorreto" + ex.getMessage());
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void cmbTipoRelatorioItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbTipoRelatorioItemStateChanged
+        String tipo;
+        tipo = cmbTipoRelatorio.getSelectedItem().toString();
+        if(tipo.equalsIgnoreCase("Por categoria")){
+            txtCategoria.setVisible(true);
+            lblCategoria.setVisible(true);
+            txtNome.setVisible(false);
+            lblNome.setVisible(false);
+            defTable.setRowCount(0);
+        }else if(tipo.equalsIgnoreCase("Por nome")){
+            txtNome.setVisible(true);
+            lblNome.setVisible(true);
+            txtCategoria.setVisible(false);
+            lblCategoria.setVisible(false);
+            defTable.setRowCount(0);
+        }else if(tipo.equalsIgnoreCase("Geral")){
+            txtCategoria.setVisible(false);
+            lblCategoria.setVisible(false);
+            txtNome.setVisible(false);
+            lblNome.setVisible(false);
+            defTable.setRowCount(0);            
+        }
+    }//GEN-LAST:event_cmbTipoRelatorioItemStateChanged
 
     /**
      * @param args the command line arguments
