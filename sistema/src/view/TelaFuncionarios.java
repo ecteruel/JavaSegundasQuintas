@@ -6,6 +6,7 @@ package view;
 
 import javax.swing.JOptionPane;
 import persistence.Funcionario;
+import persistence.FuncionarioDao;
 
 
 
@@ -83,16 +84,22 @@ public class TelaFuncionarios extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-      Funcionario func;
-      //Instanciando um objeto da classe funcionarios
-      func = new Funcionario(); 
-      //Pega o que está nos campos do formulário e coloca no objeto func
-      func.setMatricula(Integer.parseInt(txtMatricula.getText()));
-      func.setNome(txtNome.getText());
-      func.setCargo(txtCargo.getText());
-      func.setSalario(Double.parseDouble(txtSalario.getText()));
-      JOptionPane.showMessageDialog(null, func.getNome());
-      JOptionPane.showMessageDialog(null, func.getSalario());
+        boolean resposta; // receber o retorno do método conectar
+        FuncionarioDao dao;
+        dao = new FuncionarioDao();
+        
+        Funcionario func;
+        //Instanciando um objeto da classe funcionarios
+        func = new Funcionario(
+                Integer.parseInt(txtMatricula.getText()),
+                txtNome.getText(),
+                txtCargo.getText(),
+                Double.parseDouble(txtSalario.getText())
+        ); 
+      
+      resposta = dao.conectar();
+      JOptionPane.showMessageDialog(null, resposta);
+      
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     /**
