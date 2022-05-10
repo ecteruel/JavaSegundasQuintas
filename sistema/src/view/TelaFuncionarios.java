@@ -4,6 +4,7 @@
  */
 package view;
 
+import business.FuncionarioService;
 import javax.swing.JOptionPane;
 import persistence.Funcionario;
 import persistence.FuncionarioDao;
@@ -84,12 +85,24 @@ public class TelaFuncionarios extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        //Declaração de variáveis
         boolean resposta; // receber o retorno do método conectar
         FuncionarioDao dao;
+        int resultado;
         dao = new FuncionarioDao();
+        FuncionarioService service;
+        service = new FuncionarioService();
+        boolean salarioCheck;
         
+        salarioCheck = service.verificarSalario(Double.parseDouble(txtSalario.getText()));
+        if (salarioCheck==true){
+            JOptionPane.showMessageDialog(null,"Salário deve ser menor que 20000");
+            txtSalario.requestFocus();
+            return; //para a execução deste botão
+        }
+        
+        //Encapsulamento dos dados do formulário em um objeto da classe Funcionario.java        
         Funcionario func;
-        //Instanciando um objeto da classe funcionarios
         func = new Funcionario(
                 Integer.parseInt(txtMatricula.getText()),
                 txtNome.getText(),
@@ -97,11 +110,35 @@ public class TelaFuncionarios extends javax.swing.JFrame {
                 Double.parseDouble(txtSalario.getText())
         ); 
       
-      resposta = dao.conectar();
-      JOptionPane.showMessageDialog(null, resposta);
-      
+      //Conectar ao Banco de dados por meio do método conectar da classe FuncionarioDao.java
+      resposta = dao.conectar(); //resposta pode conter true ou false
+      if(resposta){ //conectou
+          //Se conectou, salvar os dados contidos no objeto func na tabela do banco de dados
+          //por meio do métrodo salvar da classe FuncionarioDao.java
+          resultado = dao.salvar(func);
+          if(resultado==1062){
+              JOptionPane.showMessageDialog(null,"Essa matricula já está cadastrada");
+              txtMatricula.requestFocus();
+          }else if(resultado==1){
+              JOptionPane.showMessageDialog(null,"Funcionário salvo com sucesso");
+              limpar();
+          } else{
+              JOptionPane.showMessageDialog(null,"Erro na gravação");
+          }
+      }else{ //não conectou
+          JOptionPane.showMessageDialog(null,"Erro na conexão");
+      }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
+    private void limpar(){
+        txtMatricula.setText("");
+        txtNome.setText("");
+        txtCargo.setText("");
+        txtSalario.setText("");
+        txtMatricula.requestFocus();
+    }
+    
+    
     /**
      * @param args the command line arguments
      */
