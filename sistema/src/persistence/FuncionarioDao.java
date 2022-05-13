@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class FuncionarioDao {
   private Connection conecta;
@@ -52,7 +54,25 @@ public class FuncionarioDao {
     //Método para excluir dados da tabela funcionarios
   
     //Método para consultar dados da tabela funcionarios
-    
+    public Funcionario consultar(int matricula){
+      Funcionario func;
+      try {
+          st = conecta.prepareStatement("SELECT * FROM funcionarios WHERE matricula = ?");
+          st.setInt(1, matricula);
+          resultado = st.executeQuery(); //executar o select preparado acima
+          if(resultado.next()){ //Se encontrou a matricula
+             func = new Funcionario();
+             func.setNome(resultado.getString("nome"));
+             func.setCargo(resultado.getString("cargo"));
+             func.setSalario(resultado.getDouble("salario"));
+             return func;
+          } else {//se não encontrou a matrícula
+              return null;
+          }
+      } catch (SQLException ex) {
+          return null;
+      }
+    }
     //Método para alterar dados da tabela funcionarios
   
 }

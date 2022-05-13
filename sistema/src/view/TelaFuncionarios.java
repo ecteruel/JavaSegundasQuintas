@@ -42,6 +42,7 @@ public class TelaFuncionarios extends javax.swing.JFrame {
         lblSalario = new javax.swing.JLabel();
         txtSalario = new javax.swing.JTextField();
         btnSalvar = new javax.swing.JButton();
+        btnPesquisar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Controle de funcionários");
@@ -79,6 +80,15 @@ public class TelaFuncionarios extends javax.swing.JFrame {
         });
         getContentPane().add(btnSalvar);
         btnSalvar.setBounds(40, 200, 130, 30);
+
+        btnPesquisar.setText("Pesquisar");
+        btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnPesquisar);
+        btnPesquisar.setBounds(230, 30, 130, 30);
 
         setSize(new java.awt.Dimension(559, 290));
         setLocationRelativeTo(null);
@@ -130,6 +140,35 @@ public class TelaFuncionarios extends javax.swing.JFrame {
       }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
+    private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
+        FuncionarioDao dao;
+        Funcionario func;
+        boolean conectou;
+        
+        //1)Conexão com o BD
+          dao = new FuncionarioDao();
+          conectou = dao.conectar();
+          if(conectou){
+            //2)Se conectou, pega a matrícula do txtMatricula e passa para
+            //o método consultar da classe FuncionarioDao e receber o 
+            //Funcionario consultado
+             
+            func = dao.consultar(Integer.parseInt(txtMatricula.getText()));
+            if(func==null){ //não localizou
+                //3) Se retornou um funcionario, exibir os dados na tela
+                // se retornou nulo, exibir mensagem de "Não localizado"
+                JOptionPane.showMessageDialog(null,"Matricula não localizada");            
+                limpar();
+            }else{ //localizou o funcionario
+               txtNome.setText(func.getNome());
+               txtCargo.setText(func.getCargo());
+               txtSalario.setText(String.valueOf(func.getSalario()));
+            }    
+          }else{ //Não conectou ao BD
+            JOptionPane.showMessageDialog(null,"Erro na conexão");  
+          }        
+    }//GEN-LAST:event_btnPesquisarActionPerformed
+
     private void limpar(){
         txtMatricula.setText("");
         txtNome.setText("");
@@ -175,6 +214,7 @@ public class TelaFuncionarios extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnPesquisar;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JLabel lblCargo;
     private javax.swing.JLabel lblMatricula;
