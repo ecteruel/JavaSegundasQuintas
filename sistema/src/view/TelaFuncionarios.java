@@ -100,11 +100,11 @@ public class TelaFuncionarios extends javax.swing.JFrame {
         FuncionarioDao dao;
         int resultado;
         dao = new FuncionarioDao();
-        FuncionarioService service;
-        service = new FuncionarioService();
+       
         boolean salarioCheck;
+       
         
-        salarioCheck = service.verificarSalario(Double.parseDouble(txtSalario.getText()));
+        salarioCheck = FuncionarioService.verificarSalario(Double.parseDouble(txtSalario.getText()));
         if (salarioCheck==true){
             JOptionPane.showMessageDialog(null,"Salário deve ser menor que 20000");
             txtSalario.requestFocus();
