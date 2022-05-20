@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class FuncionarioDao {
@@ -51,7 +53,23 @@ public class FuncionarioDao {
     
     
     //Método para excluir dados da tabela funcionarios
-  
+    public boolean excluir(int matricula){
+      try {
+          st = conecta.prepareStatement("DELETE FROM funcionarios WHERE matricula = ?");
+          st.setInt(1, matricula);
+          int r = st.executeUpdate(); //executar o delete preparado acima
+          if(r==1){//Se conseguiu excluir
+           return true;
+          }else{ //Não excluiu porque não encontrou
+              return false;
+          }
+      } catch (SQLException ex) {
+          return false;
+      }
+    }
+    
+    
+    
     //Método para consultar dados da tabela funcionarios
     public Funcionario consultar(int matricula){
       Funcionario func;

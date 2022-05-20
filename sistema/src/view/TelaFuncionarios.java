@@ -3,13 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package view;
-
+import java.util.concurrent.ThreadLocalRandom;
 import business.FuncionarioService;
+import java.util.Random;
 import javax.swing.JOptionPane;
 import persistence.Funcionario;
 import persistence.FuncionarioDao;
-
-
 
 /**
  *
@@ -22,6 +21,7 @@ public class TelaFuncionarios extends javax.swing.JFrame {
      */
     public TelaFuncionarios() {
         initComponents();
+        btnExcluir.setVisible(false);
     }
 
     /**
@@ -43,6 +43,7 @@ public class TelaFuncionarios extends javax.swing.JFrame {
         txtSalario = new javax.swing.JTextField();
         btnSalvar = new javax.swing.JButton();
         btnPesquisar = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Controle de funcionários");
@@ -90,6 +91,15 @@ public class TelaFuncionarios extends javax.swing.JFrame {
         getContentPane().add(btnPesquisar);
         btnPesquisar.setBounds(230, 30, 130, 30);
 
+        btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnExcluir);
+        btnExcluir.setBounds(190, 200, 140, 30);
+
         setSize(new java.awt.Dimension(559, 290));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
@@ -100,17 +110,16 @@ public class TelaFuncionarios extends javax.swing.JFrame {
         FuncionarioDao dao;
         int resultado;
         dao = new FuncionarioDao();
-       
+
         boolean salarioCheck;
-       
-        
+
         salarioCheck = FuncionarioService.verificarSalario(Double.parseDouble(txtSalario.getText()));
-        if (salarioCheck==true){
-            JOptionPane.showMessageDialog(null,"Salário deve ser menor que 20000");
+        if (salarioCheck == true) {
+            JOptionPane.showMessageDialog(null, "Salário deve ser menor que 20000");
             txtSalario.requestFocus();
             return; //para a execução deste botão
         }
-        
+
         //Encapsulamento dos dados do formulário em um objeto da classe Funcionario.java        
         Funcionario func;
         func = new Funcionario(
@@ -118,66 +127,97 @@ public class TelaFuncionarios extends javax.swing.JFrame {
                 txtNome.getText(),
                 txtCargo.getText(),
                 Double.parseDouble(txtSalario.getText())
-        ); 
-      
-      //Conectar ao Banco de dados por meio do método conectar da classe FuncionarioDao.java
-      resposta = dao.conectar(); //resposta pode conter true ou false
-      if(resposta){ //conectou
-          //Se conectou, salvar os dados contidos no objeto func na tabela do banco de dados
-          //por meio do métrodo salvar da classe FuncionarioDao.java
-          resultado = dao.salvar(func);
-          if(resultado==1062){
-              JOptionPane.showMessageDialog(null,"Essa matricula já está cadastrada");
-              txtMatricula.requestFocus();
-          }else if(resultado==1){
-              JOptionPane.showMessageDialog(null,"Funcionário salvo com sucesso");
-              limpar();
-          } else{
-              JOptionPane.showMessageDialog(null,"Erro na gravação");
-          }
-      }else{ //não conectou
-          JOptionPane.showMessageDialog(null,"Erro na conexão");
-      }
+        );
+
+        //Conectar ao Banco de dados por meio do método conectar da classe FuncionarioDao.java
+        resposta = dao.conectar(); //resposta pode conter true ou false
+        if (resposta) { //conectou
+            //Se conectou, salvar os dados contidos no objeto func na tabela do banco de dados
+            //por meio do métrodo salvar da classe FuncionarioDao.java
+            resultado = dao.salvar(func);
+            if (resultado == 1062) {
+                JOptionPane.showMessageDialog(null, "Essa matricula já está cadastrada");
+                txtMatricula.requestFocus();
+            } else if (resultado == 1) {
+                JOptionPane.showMessageDialog(null, "Funcionário salvo com sucesso");
+                limpar();
+            } else {
+                JOptionPane.showMessageDialog(null, "Erro na gravação");
+            }
+        } else { //não conectou
+            JOptionPane.showMessageDialog(null, "Erro na conexão");
+        }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
         FuncionarioDao dao;
         Funcionario func;
         boolean conectou;
-        
+
         //1)Conexão com o BD
-          dao = new FuncionarioDao();
-          conectou = dao.conectar();
-          if(conectou){
+        dao = new FuncionarioDao();
+        conectou = dao.conectar();
+        if (conectou) {
             //2)Se conectou, pega a matrícula do txtMatricula e passa para
             //o método consultar da classe FuncionarioDao e receber o 
             //Funcionario consultado
-             
+
             func = dao.consultar(Integer.parseInt(txtMatricula.getText()));
-            if(func==null){ //não localizou
+            if (func == null) { //não localizou
                 //3) Se retornou um funcionario, exibir os dados na tela
                 // se retornou nulo, exibir mensagem de "Não localizado"
-                JOptionPane.showMessageDialog(null,"Matricula não localizada");            
+                JOptionPane.showMessageDialog(null, "Matricula não localizada");
                 limpar();
-            }else{ //localizou o funcionario
-               txtNome.setText(func.getNome());
-               txtCargo.setText(func.getCargo());
-               txtSalario.setText(String.valueOf(func.getSalario()));
-            }    
-          }else{ //Não conectou ao BD
-            JOptionPane.showMessageDialog(null,"Erro na conexão");  
-          }        
+            } else { //localizou o funcionario
+                txtNome.setText(func.getNome());
+                txtCargo.setText(func.getCargo());
+                txtSalario.setText(String.valueOf(func.getSalario()));
+                btnExcluir.setVisible(true);
+            }
+        } else { //Não conectou ao BD
+            JOptionPane.showMessageDialog(null, "Erro na conexão");
+        }
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
-    private void limpar(){
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        FuncionarioDao dao;
+        boolean excluiu;
+        boolean conectou;
+        int matricula;
+
+        if (txtMatricula.getText().equals("")) { //Se a matrícula está vazia
+            JOptionPane.showMessageDialog(null,"Digite a matrícula");
+            txtMatricula.requestFocus();
+            return;
+        } else {//Se digitou a matricula
+            matricula = Integer.parseInt(txtMatricula.getText());
+        }
+
+        //Conectar ao Banco de Dados
+        dao = new FuncionarioDao();
+        conectou = dao.conectar();
+        if (conectou == true) {
+            excluiu = dao.excluir(matricula);
+            if (excluiu == true) {
+                JOptionPane.showMessageDialog(null, "Funcionario excluído com sucesso");
+                limpar();
+                btnExcluir.setVisible(false);
+            } else {
+                JOptionPane.showMessageDialog(null, "Esta matrícula não foi localizada");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Erro na conexão");
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void limpar() {
         txtMatricula.setText("");
         txtNome.setText("");
         txtCargo.setText("");
         txtSalario.setText("");
         txtMatricula.requestFocus();
     }
-    
-    
+
     /**
      * @param args the command line arguments
      */
@@ -214,6 +254,7 @@ public class TelaFuncionarios extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnPesquisar;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JLabel lblCargo;

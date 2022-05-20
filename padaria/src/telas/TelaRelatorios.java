@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -49,6 +50,7 @@ public class TelaRelatorios extends javax.swing.JFrame {
         btnBuscar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblProdutos = new javax.swing.JTable();
+        btnObterDados = new javax.swing.JButton();
 
         setTitle("Relatórios de produtos");
         getContentPane().setLayout(null);
@@ -100,7 +102,16 @@ public class TelaRelatorios extends javax.swing.JFrame {
         getContentPane().add(jScrollPane1);
         jScrollPane1.setBounds(20, 70, 710, 330);
 
-        setSize(new java.awt.Dimension(766, 458));
+        btnObterDados.setText("Obter Dados");
+        btnObterDados.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnObterDadosActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnObterDados);
+        btnObterDados.setBounds(50, 415, 180, 30);
+
+        setSize(new java.awt.Dimension(766, 495));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -179,6 +190,22 @@ public class TelaRelatorios extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cmbTipoRelatorioItemStateChanged
 
+    private void btnObterDadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnObterDadosActionPerformed
+        //pega o número de linhas da tabela tblProdutos
+        int qtdLinhas = tblProdutos.getRowCount();
+        int i = 0;
+        while (i<qtdLinhas){
+                //Obtém o valor contido na célula onde cliquei
+                String codigo = (String) tblProdutos.getModel().getValueAt(tblProdutos.convertRowIndexToModel(i), 0);
+                String nome = (String) tblProdutos.getModel().getValueAt(tblProdutos.convertRowIndexToModel(i), 1);
+                String marca = (String) tblProdutos.getModel().getValueAt(tblProdutos.convertRowIndexToModel(i), 2);
+                String preco = (String) tblProdutos.getModel().getValueAt(tblProdutos.convertRowIndexToModel(i), 3);
+                //Exibe o valor pego da célula selecionada
+                System.out.println(codigo + " - " + nome + " - " + marca + " - " + preco );
+                i++;
+        }
+    }//GEN-LAST:event_btnObterDadosActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -216,6 +243,7 @@ public class TelaRelatorios extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnObterDados;
     private javax.swing.JComboBox<String> cmbTipoRelatorio;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblCategoria;
