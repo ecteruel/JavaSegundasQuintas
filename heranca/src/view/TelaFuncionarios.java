@@ -1,7 +1,9 @@
 
 package view;
 
+import javax.swing.JOptionPane;
 import persistence.Funcionario;
+import persistence.FuncionarioDao;
 import persistence.Pessoa;
 
 public class TelaFuncionarios extends javax.swing.JFrame {
@@ -105,8 +107,28 @@ public class TelaFuncionarios extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void limpar(){
+        txtSalario.setText("");
+        txtCargo.setText("");
+        txtCodigo.setText("");
+        txtNome.setText("");
+        txtCpf.setText("");
+        txtRg.setText("");
+        txtEndereco.setText("");
+        txtTelefone.setText("");
+        txtEmail.setText("");
+        txtCodigo.requestFocus();
+    }
+        
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        //Declaração de variáveis
         Pessoa func;
+        FuncionarioDao dao; //para chamar o método conectar e salvar 
+        dao = new FuncionarioDao();
+        boolean conectou; //para receber o retorno do método conectar
+        int salvou; //para receber o retorno do método salvar
+        
+        //Armazena os dados da tela em no objeto func
         func = new Funcionario(        
                 txtCargo.getText(),
                 Double.parseDouble(txtSalario.getText()),
@@ -118,7 +140,21 @@ public class TelaFuncionarios extends javax.swing.JFrame {
                 txtTelefone.getText(),
                 txtEmail.getText()
         );
-        
+        //Conecta ao BD
+        conectou = dao.conectar();
+        if(conectou){
+            salvou = dao.salvar(func);
+            if(salvou==1){
+                JOptionPane.showMessageDialog(null,"Salvo com sucesso");
+                limpar();
+            }else if (salvou==1062){
+                JOptionPane.showMessageDialog(null,"Funcionário já cadastrado");
+            }else{
+                JOptionPane.showMessageDialog(null,"Erro ao salvar");                
+            }
+        }else{
+            JOptionPane.showMessageDialog(null,"Erro na conexão");
+        }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     /**
