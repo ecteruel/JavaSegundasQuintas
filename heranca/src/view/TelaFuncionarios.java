@@ -124,8 +124,6 @@ public class TelaFuncionarios extends javax.swing.JFrame {
         //Declaração de variáveis
         Pessoa func;
         FuncionarioDao dao; //para chamar o método conectar e salvar 
-        dao = new FuncionarioDao();
-        boolean conectou; //para receber o retorno do método conectar
         int salvou; //para receber o retorno do método salvar
         
         //Armazena os dados da tela em no objeto func
@@ -140,20 +138,16 @@ public class TelaFuncionarios extends javax.swing.JFrame {
                 txtTelefone.getText(),
                 txtEmail.getText()
         );
-        //Conecta ao BD
-        conectou = dao.conectar();
-        if(conectou){
-            salvou = dao.salvar(func);
-            if(salvou==1){
-                JOptionPane.showMessageDialog(null,"Salvo com sucesso");
-                limpar();
-            }else if (salvou==1062){
-                JOptionPane.showMessageDialog(null,"Funcionário já cadastrado");
-            }else{
-                JOptionPane.showMessageDialog(null,"Erro ao salvar");                
-            }
+
+        dao = new FuncionarioDao(); //faz a conexão com o BD
+        salvou = dao.salvar(func);
+        if(salvou==1){
+            JOptionPane.showMessageDialog(null,"Salvo com sucesso");
+            limpar();
+        }else if (salvou==1062){
+            JOptionPane.showMessageDialog(null,"Funcionário já cadastrado");
         }else{
-            JOptionPane.showMessageDialog(null,"Erro na conexão");
+            JOptionPane.showMessageDialog(null,"Erro ao salvar");                
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
 

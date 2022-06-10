@@ -2,38 +2,27 @@
 package persistence;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class FuncionarioDao implements InterfaceDao{
      private Connection conecta;
      private PreparedStatement st;
          
-    @Override
-    public boolean conectar() {
-         String driver, url, usuario, senha;
-
-         driver = "com.mysql.cj.jdbc.Driver";
-         url = "jdbc:mysql://localhost:3306/teste";
-         usuario = "root";
-         senha = "teruel";
-        
-         try {
-             Class.forName(driver);
-             conecta = DriverManager.getConnection(url, usuario, senha);
-             return true;
-         } catch (ClassNotFoundException | SQLException ex) {
-             return false;
-         }
-    }
-
+     //Fazer a conexão com o BD por meio do método conectar da 
+     //classe ConexaoDao
+     public FuncionarioDao(){
+        ConexaoDao dao;
+        dao = new ConexaoDao();
+        this.conecta = dao.conectar();
+     }
+     
      @Override
      public int salvar(Pessoa p) {
          try {
              Funcionario func = (Funcionario) p;
              String sql;
              sql = "INSERT INTO funcionario VALUES(?,?,?,?,?,?,?,?,?)";
-             st = conecta.prepareStatement(sql);
+             st = this.conecta.prepareStatement(sql);
              st.setInt(1, func.getCodigo());
              st.setString(2, func.getNome());
              st.setString(3, func.getCpf());

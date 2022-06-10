@@ -4,7 +4,9 @@
  */
 package view;
 
+import javax.swing.JOptionPane;
 import persistence.Cliente;
+import persistence.ClienteDao;
 import persistence.Pessoa;
 
 /**
@@ -111,7 +113,27 @@ public class TelaClientes extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void limpar(){
+        txtRendaFamiliar.setText("");
+        txtCodigo.setText("");
+        txtNome.setText("");
+        txtCpf.setText("");
+        txtRg.setText("");
+        txtEndereco.setText("");
+        txtTelefone.setText("");
+        txtEmail.setText("");
+        txtCodigo.requestFocus();
+    }    
+    
+    
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+/*
+        //Declaração de variáveis
+        ClienteDao dao; //para chamar o método conectar e salvar 
+        dao = new ClienteDao();
+        boolean conectou; //para receber o retorno do método conectar
+        int salvou; //para receber o retorno do método salvar
+
         Pessoa cli;
         cli = new Cliente(
                 Double.parseDouble(txtRendaFamiliar.getText()),
@@ -123,7 +145,22 @@ public class TelaClientes extends javax.swing.JFrame {
                 txtTelefone.getText(),
                 txtEmail.getText()       
         );
-        
+      //Conecta ao BD
+        conectou = dao.conectar();
+        if(conectou){
+            salvou = dao.salvar(cli);
+            if(salvou==1){
+                JOptionPane.showMessageDialog(null,"Salvo com sucesso");
+                limpar();
+            }else if (salvou==1062){
+                JOptionPane.showMessageDialog(null,"Cliente já cadastrado");
+            }else{
+                JOptionPane.showMessageDialog(null,"Erro ao salvar");                
+            }
+        }else{
+            JOptionPane.showMessageDialog(null,"Erro na conexão");
+        }        
+*/
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     /**
