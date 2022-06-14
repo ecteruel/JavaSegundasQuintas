@@ -36,6 +36,7 @@ public class TelaFuncionarios extends javax.swing.JFrame {
         lblSalario = new javax.swing.JLabel();
         txtSalario = new javax.swing.JTextField();
         btnSalvar = new javax.swing.JButton();
+        btnRelatorio = new javax.swing.JButton();
 
         setTitle("Controle de funcionários");
         getContentPane().setLayout(null);
@@ -103,7 +104,16 @@ public class TelaFuncionarios extends javax.swing.JFrame {
         getContentPane().add(btnSalvar);
         btnSalvar.setBounds(10, 370, 140, 40);
 
-        setSize(new java.awt.Dimension(570, 461));
+        btnRelatorio.setText("Relatório");
+        btnRelatorio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRelatorioActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnRelatorio);
+        btnRelatorio.setBounds(170, 370, 160, 40);
+
+        setSize(new java.awt.Dimension(602, 461));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -151,6 +161,10 @@ public class TelaFuncionarios extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
+    private void btnRelatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRelatorioActionPerformed
+        new TelaRelatorioFuncionario().setVisible(true);
+    }//GEN-LAST:event_btnRelatorioActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -187,6 +201,7 @@ public class TelaFuncionarios extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnRelatorio;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JLabel lblCargo;
     private javax.swing.JLabel lblCodigo;

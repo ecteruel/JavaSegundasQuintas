@@ -193,17 +193,7 @@ public class TelaRelatorios extends javax.swing.JFrame {
     private void btnObterDadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnObterDadosActionPerformed
         //pega o número de linhas da tabela tblProdutos
         int qtdLinhas = tblProdutos.getRowCount();
-        int i = 0;
-        while (i<qtdLinhas){
-                //Obtém o valor contido na célula onde cliquei
-                String codigo = (String) tblProdutos.getModel().getValueAt(tblProdutos.convertRowIndexToModel(i), 0);
-                String nome = (String) tblProdutos.getModel().getValueAt(tblProdutos.convertRowIndexToModel(i), 1);
-                String marca = (String) tblProdutos.getModel().getValueAt(tblProdutos.convertRowIndexToModel(i), 2);
-                String preco = (String) tblProdutos.getModel().getValueAt(tblProdutos.convertRowIndexToModel(i), 3);
-                //Exibe o valor pego da célula selecionada
-                System.out.println(codigo + " - " + nome + " - " + marca + " - " + preco );
-                i++;
-        }
+        String codigo = (String) tblProdutos.getModel().getValueAt(tblProdutos.convertRowIndexToModel(0), 0);
     }//GEN-LAST:event_btnObterDadosActionPerformed
 
     /**
